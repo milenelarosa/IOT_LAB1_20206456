@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+        <item>
+            <!-- Fondo del CardView -->
+            <shape android:shape="rectangle">
+                <solid android:color="#FFFFFF"/> <!-- Fondo blanco -->
+                <corners android:radius="8dp" /> <!-- Radio de las esquinas -->
+            </shape>
+        </item>
+
+        <item android:left="1dp" android:right="1dp" android:top="1dp" android:bottom="1dp">
+            <!-- Borde negro -->
+            <shape android:shape="rectangle">
+                <solid android:color="#000000"/> <!-- Color del borde -->
+                <corners android:radius="8dp" /> <!-- Mismo radio que el fondo -->
+            </shape>
+        </item>
+    </layer-list>

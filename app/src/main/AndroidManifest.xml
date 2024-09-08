@@ -24,6 +24,7 @@
 
         <!-- Declarar la GameActivity -->
         <activity android:name=".GameActivity" />
+        <activity android:name=".StatisticsActivity" />
 
     </application>
 </manifest>

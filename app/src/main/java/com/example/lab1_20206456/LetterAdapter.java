@@ -37,7 +37,7 @@ public class LetterAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         Button btnLetter;
         if(view==null) {
-            btnLetter = (Button) letterInf.inflate(R.layout.letter, viewGroup, false);
+            btnLetter = (Button)letterInf.inflate(R.layout.letter, viewGroup, false);
         }else{
             btnLetter=(Button) view;
         }

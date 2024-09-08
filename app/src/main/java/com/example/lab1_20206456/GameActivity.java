@@ -1,6 +1,7 @@
 package com.example.lab1_20206456;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
@@ -33,11 +35,35 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[] parts;
     private int sizeParts=6;
     private int currPart;
+    private long startTime;
+    private ArrayList<String> gameRes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((R.layout.activity_game));
+
+        ImageView backButton = findViewById(R.id.imageView);
+        ImageView statsButton = findViewById(R.id.imageView2);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, StatisticsActivity.class);
+                intent.putStringArrayListExtra("gameResults", gameRes);
+                intent.putExtra("playerName", getIntent().getStringExtra("playerName"));
+                startActivity(intent);
+            }
+        });
+
         words = getResources().getStringArray(R.array.words);
         wordLayout = findViewById(R.id.words);
         gridView = findViewById(R.id.letters);
@@ -54,15 +80,21 @@ public class GameActivity extends AppCompatActivity {
         playGame();
     }
 
+
     private void playGame(){
-        String newWord = words[random.nextInt(words.length)];
+        String newWord = words[random.nextInt(words.length)]; // Sirve para que cada inicio del juego se presenten las palabras en un orden random
 
-        while(newWord.equals(currWord))newWord=words[random.nextInt(words.length)];
+        while(newWord.equals(currWord)){  // Para que las palabras no se repitan
+            newWord=words[random.nextInt(words.length)];
+        }
 
-        currWord=newWord;
+        startTime = System.currentTimeMillis();
+
+        currWord = newWord.toUpperCase();
+
+        wordLayout.removeAllViews();
 
         charViews = new TextView[currWord.length()];
-
         for(int i=0; i<currWord.length();i++){
             charViews[i]=new TextView(this);
             charViews[i].setText(""+currWord.charAt(i));
@@ -78,10 +110,14 @@ public class GameActivity extends AppCompatActivity {
         numCorr = 0;
         currPart = 0;
         numChars = currWord.length();
+
+        for (ImageView part : parts) {
+            part.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void letterPressed(View view){
-        String letter=((TextView)view).getText().toString();
+        String letter=((TextView) view).getText().toString().toUpperCase();
         char letterChar = letter.charAt(0);
 
         view.setEnabled(false);
@@ -92,28 +128,20 @@ public class GameActivity extends AppCompatActivity {
                 correct = true;
                 numCorr++;
                 charViews[i].setTextColor(Color.BLACK);
+                charViews[i].setText("" + currWord.charAt(i));
             }
         }
+
+        TextView gameResultTextView = findViewById(R.id.gameResult);
+
         if(correct){
             if(numCorr == numChars){
                 disabledButtons();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Ganaste");
-                builder.setMessage("Felicidades!\n\n La respuesta era \n\n" + currWord);
-                builder.setPositiveButton("Jugar de nuevo", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        GameActivity.this.playGame();
-                    }
-                });
 
-                builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        GameActivity.this.finish();
-                    }
-                });
-                builder.show();
+                long endTime = System.currentTimeMillis();
+                long timeTaken = (endTime - startTime) / 1000;
+                isGameResult("Terminó en " + timeTaken + "s");
+                gameResultTextView.setText("Ganó / Terminó en " + timeTaken + "s");
             }
 
         }else if(currPart<sizeParts) {
@@ -121,23 +149,8 @@ public class GameActivity extends AppCompatActivity {
             currPart++;
         }else{
             disabledButtons();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Perdiste");
-            builder.setMessage("Tu perdiste!\n\n La respuesta era \n\n" + currWord);
-            builder.setPositiveButton("Jugar de nuevo", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    GameActivity.this.playGame();
-                }
-            });
-
-            builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    GameActivity.this.finish();
-                }
-            });
-            builder.show();
+            isGameResult("Perdió");
+            gameResultTextView.setText("Perdió. La palabra era: " + currWord);
         }
 
     }
@@ -147,4 +160,19 @@ public class GameActivity extends AppCompatActivity {
             gridView.getChildAt(i).setEnabled(false);
         }
     }
+
+    public void startNewGame(View view) {
+        playGame();
+
+        TextView gameResultTextView = findViewById(R.id.gameResult);
+        isGameResult("Canceló");
+        gameResultTextView.setText("");
+    }
+
+    private void isGameResult(String result) {
+        gameRes.add("Juego " + (gameRes.size() + 1) + ": " + result);
+    }
+
+
+
 }

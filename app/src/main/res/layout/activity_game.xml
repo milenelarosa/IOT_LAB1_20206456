@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Imagen de la torre -->
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="283dp"
+                android:layout_width="278dp"
                 android:layout_height="match_parent"
                 android:text="    TeleGame"
                 android:textAlignment="textStart"
@@ -62,12 +62,6 @@
     </androidx.cardview.widget.CardView>
 
 
-    <!-- Imagen de la torre -->
-
-    <!-- Tablero de letras (Teclado) -->
-    <!-- Botón de nuevo juego -->
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -78,18 +72,23 @@
             android:id="@+id/buttonNewGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
             android:text="Nuevo Juego"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976"
+            android:layout_below="@+id/gameResult"
+            android:onClick="startNewGame" />
 
         <LinearLayout
             android:id="@+id/words"
-            android:layout_width="380dp"
-            android:layout_height="44dp"
+            android:layout_width="369dp"
+            android:layout_height="63dp"
             android:layout_marginTop="29dp"
-            android:background="@android:color/white"
+            android:background="@color/black"
+            android:backgroundTint="@color/white"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="10dp"
@@ -119,6 +118,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.817" />
+
+
+        <TextView
+            android:id="@+id/gameResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.899" />
 
         <ImageView
             android:id="@+id/imageViewTower"

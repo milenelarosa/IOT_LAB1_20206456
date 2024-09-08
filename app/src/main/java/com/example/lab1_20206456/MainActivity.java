@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         buttonPlay = findViewById(R.id.play_button);
         tvTitle = findViewById(R.id.title);
 
-        // Habilitar el botón si el nombre está ingresado
+        buttonPlay.setEnabled(false);
+
+        // Para habilitar el botón si el nombre está ingresado
         editTextName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -52,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) { }
         });
 
-        // Registrar context menu para el título
+
         registerForContextMenu(tvTitle);
 
-        // Acción del botón jugar
+        // Empieza a jugar
         buttonPlay.setOnClickListener(v -> {
             String name = editTextName.getText().toString();
             Intent intent = new Intent(MainActivity.this, GameActivity.class);
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Crear el menú contextual para cambiar el color del título
+    // Código adaptado de ChatGPT.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
